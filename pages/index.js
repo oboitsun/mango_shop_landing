@@ -1,14 +1,20 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Logo from '../modules/logo'
+import Logo from '../modules/Logo'
 import Social from '../modules/Social'
 import HomeImagesSection from '../modules/HomeImagesSection'
 import About from '../modules/About'
 import ShowroomPreview from '../modules/ShowroomPreview/'
 import { showrooms } from '../lib/data'
-export default function Home() {
+import { motion } from 'framer-motion'
+import Testing from '../modules/Testing'
+const TestingPage = () => {
+  const test = Testing
+  return test
+}
+const Home = () => {
   return (
-    <>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Head>
         <title>MANGO</title>
       </Head>
@@ -23,6 +29,7 @@ export default function Home() {
           <div className='pb-20'>
             <HomeImagesSection />
           </div>
+
           <div className='showrooms max-w-7xl flex flex-col w-full'>
             <div className='pb-20'>
               <About />
@@ -30,12 +37,14 @@ export default function Home() {
 
             {showrooms.map((sh, i) => (
               <Link
-                key={sh.id}
+                key={i}
+                className='w-full'
+                scroll={false}
                 href={{
                   pathname: '/showroom/[slug]',
                   query: { slug: sh.slug },
                 }}>
-                <a className='w-full'>
+                <a>
                   <ShowroomPreview showroom={sh} i={i} />
                 </a>
               </Link>
@@ -43,6 +52,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   )
 }
+
+export default Home

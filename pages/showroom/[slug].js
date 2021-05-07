@@ -1,23 +1,40 @@
 import { showrooms } from '../../lib/data'
+import { useEffect } from 'react'
 import Head from 'next/head'
-import Social from '../../modules/Social'
-export default function ShowRoom(props) {
-  const { city, street, location, imgs } = props
+import Nav from '../../modules/Showroom/Nav'
+import Heading from '../../modules/Showroom/Heading'
+import ImgSection from '../../modules/Showroom/ImgSection'
+import Bio from '../../modules/Showroom/Bio'
+import YTube from '../../modules/Showroom/YTube'
+import { motion } from 'framer-motion'
+const ShowRoom = (props) => {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'auto',
+    })
+  }, [])
+  const { id, slug, city, street, location, floor, phone, worktime, weekends, imgs } = props
+  const fadeIn = {
+    initial: {
+      opacity: 0,
+    },
+    animate: {
+      opacity: 1,
+    },
+  }
   return (
-    <>
+    <motion.div exit={{ opacity: 0 }}>
       <Head>
         <title>{`MANGO - ${location}`}</title>
       </Head>
-      <div className='w-full max-w-5xl  flex flex-col  items-center m-auto'>
-        <img className='h-80 w-auto object-fit' alt={location} src={imgs[0]} />
-        <div className=' w-full h-auto  flex flex-col justify-center items-center transition-all'>
-          <div>{location}</div>
-          <div>{city}</div>
-          <div>{street}</div>
-          <Social />
-        </div>
-      </div>
-    </>
+      <Nav info={props} />
+      <Heading />
+      <ImgSection />
+      <Bio />
+      <YTube />
+    </motion.div>
   )
 }
 export async function getStaticPaths() {
@@ -33,3 +50,5 @@ export async function getStaticProps(context) {
     props: showrooms.find((sh) => sh.slug === params.slug), // will be passed to the page component as props
   }
 }
+
+export default ShowRoom
